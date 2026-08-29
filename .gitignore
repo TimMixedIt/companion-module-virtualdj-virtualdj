@@ -1,0 +1,8 @@
+node_modules/
+/pkg
+/*.tgz
+/dist
+/coverage
+DEBUG-*
+/.yarn
+/.vscode

@@ -1,0 +1,39 @@
+{
+	"name": "virtualdj-companion",
+	"version": "1.0.0",
+	"main": "dist/main.js",
+	"type": "module",
+	"scripts": {
+		"format": "prettier -w .",
+		"package": "npm run build && companion-module-build",
+		"build": "rimraf dist && npm run build:main",
+		"build:main": "tsc -p tsconfig.build.json",
+		"dev": "tsc -p tsconfig.build.json --watch",
+		"lint:raw": "eslint",
+		"lint": "npm run lint:raw -- .",
+		"test": "vitest run",
+		"test:watch": "vitest"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/timmixedit/virtualdj-companion.git"
+	},
+	"engines": {
+		"node": "^22.20"
+	},
+	"dependencies": {
+		"@companion-module/base": "2.0.4"
+	},
+	"devDependencies": {
+		"@companion-module/tools": "^3.1.0",
+		"@types/node": "^22.19.17",
+		"eslint": "^9.39.4",
+		"prettier": "^3.8.3",
+		"rimraf": "^6.1.3",
+		"typescript": "~6.0.3",
+		"typescript-eslint": "^8.59.0",
+		"vitest": "^4.1.11"
+	},
+	"prettier": "@companion-module/tools/.prettierrc.json"
+}

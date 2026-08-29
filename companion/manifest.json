@@ -1,0 +1,28 @@
+{
+	"$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
+	"type": "connection",
+	"id": "virtualdj",
+	"name": "virtualdj",
+	"shortname": "VirtualDJ",
+	"description": "Control VirtualDJ decks, mixer, loops, hotcues, effects, browser/automix, sampler, master and recording over the Network Control plugin, with feedback and variables driven by polling.",
+	"version": "1.0.0",
+	"license": "MIT",
+	"repository": "git+https://github.com/timmixedit/virtualdj-companion.git",
+	"bugs": "https://github.com/timmixedit/virtualdj-companion/issues",
+	"maintainers": [
+		{
+			"name": "Tim Kerzmann",
+			"email": "tim.kerzmann@gmail.com"
+		}
+	],
+	"runtime": {
+		"type": "node22",
+		"api": "nodejs-ipc",
+		"apiVersion": "0.0.0",
+		"entrypoint": "../dist/main.js"
+	},
+	"legacyIds": [],
+	"manufacturer": "Atomix Productions",
+	"products": ["VirtualDJ"],
+	"keywords": ["dj", "virtualdj", "vdj", "audio", "mixer"]
+}
