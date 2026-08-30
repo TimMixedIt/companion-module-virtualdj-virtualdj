@@ -35,7 +35,13 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			label: 'VirtualDJ Host / IP',
 			width: 6,
 			default: '127.0.0.1',
-			regex: `${Regex.IP}|${Regex.HOSTNAME}`,
+			// Regex.HOSTNAME alone (not concatenated with Regex.IP) is correct here: both
+			// constants are already fully-delimited regex strings ("/^.../$/"), and naive
+			// string concatenation of two of those breaks the pattern rather than OR-ing
+			// them. HOSTNAME's dot-separated-alphanumeric-labels grammar already accepts
+			// dotted-decimal IPs like "127.0.0.1" or "192.168.1.50" as a special case of a
+			// valid hostname, so it covers both without needing Regex.IP at all.
+			regex: Regex.HOSTNAME,
 		},
 		{
 			type: 'number',
