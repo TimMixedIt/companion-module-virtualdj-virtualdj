@@ -186,6 +186,12 @@ application - the following can only be confirmed on real hardware:
       case-insensitively - real responses were only cross-checked from
       documentation excerpts and forum/skin examples, not exhaustively
       probed against a live install for every single verb).
+- [x] ~~`deck<N>_remaining` shows raw milliseconds instead of a clock~~ -
+      found on real hardware and fixed: `get_time` returns milliseconds
+      regardless of arguments, so the module now formats it client-side
+      (see `docs/VERB_SOURCES.md`). `record_time`'s format is still
+      unconfirmed either way; the module auto-detects it at runtime instead
+      of assuming, but worth a glance once you actually record something.
 - [ ] End-to-end feel on a real Stream Deck: button press → LED feedback
       latency at your chosen poll interval, and whether that interval is
       fast enough for your use (e.g. play/pause LED) without straining your

@@ -61,7 +61,8 @@ plausible but aren't real, official verbs.
 | `load '<path>'` | action | CONFIRMED | Official appendix; local test: `deck 2 load "<absolute path>"` loaded the file directly. |
 | `loaded` | query | CONFIRMED | Local test (see `deck <n> <verb>` scoping above). |
 | `get_title`, `get_artist`, `get_bpm` | query | CONFIRMED | Official appendix; local test: all three were pushed with the correct new values within the same second a track was loaded. |
-| `get_key`, `get_pitch_value`, `get_time` | query | UNCONFIRMED | Official appendix only. |
+| `get_key`, `get_pitch_value` | query | UNCONFIRMED | Official appendix only. |
+| `get_time` | query | CONFIRMED | Official appendix (documents it as returning milliseconds regardless of arguments) + confirmed live on a real VirtualDJ install: a user-reported raw millisecond count (e.g. `188307`) on a button using this module's `deck1_remaining` variable, which the module now formats client-side (`formatMsAsClock`/`formatVdjTimeLikeValue` in `src/vdj/parse.ts`) instead of trusting an unverified `'short'` argument to pre-format it. |
 | `deck_has_error` | query | CONFIRMED | Official appendix; dedicated local pad-page fixture: stayed off in normal use, turned on after a deliberately missing file load, cleared after a later successful load. |
 | `crossfader` (bare = query, with `%` = action) | action+query | CONFIRMED | Official appendix; local test: `crossfader 100%` moved it, the bare form read back the new position. |
 | `volume`, `gain`, `mute`, `pfl`, `master_volume`, `booth_volume`, `headphone_volume`, `headphone_mix`, `cross_assign`, `get_level` | action/query | UNCONFIRMED | Official appendix only. Query-capability of `mute`/`pfl` specifically (used for the paired feedbacks) was **not** independently confirmed either - verify on your own VirtualDJ build. |
@@ -80,7 +81,7 @@ plausible but aren't real, official verbs.
 | `sampler_play`, `sampler_stop`, `sampler_pad`, `sampler_bank`, `get_sampler_bank`, `sampler_used` | action/query | UNCONFIRMED | Official appendix only. |
 | `sampler_pad_page` | action+query | CONFIRMED | Local pad/skin testing observed it returning the expected 8-pad window labels (e.g. `"1 to 8"`, `"9 to 16"`). |
 | `sampler_loaded` | query | CONFIRMED | Official guidance + local testing explicitly validate this as the correct absolute-slot loaded/visibility check (as opposed to the paged/"auto" form). |
-| `record`, `broadcast`, `get_record_time`, `broadcast_message` | action/query | UNCONFIRMED | Official appendix only. |
+| `record`, `broadcast`, `get_record_time`, `broadcast_message` | action/query | UNCONFIRMED | Official appendix only. `get_record_time`'s return format (raw milliseconds like `get_time`, or already-formatted text) is not confirmed either way, so the module detects the shape at runtime (`formatVdjTimeLikeValue`) rather than assuming - see the `get_time` note above for why guessing this once already went wrong. |
 
 ## Protocol-level facts (not verbs, but load-bearing for this module)
 

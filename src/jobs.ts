@@ -1,6 +1,6 @@
 import type { PollJob } from './poller.js'
 import { HOTCUE_SLOTS, FX_SLOTS, SAMPLER_SLOTS } from './state.js'
-import { parseVdjBoolean, parseVdjText, parseVdjNumber } from './vdj/parse.js'
+import { parseVdjBoolean, parseVdjText, parseVdjNumber, formatVdjTimeLikeValue } from './vdj/parse.js'
 import * as transport from './vdj/scripts/transport.js'
 import * as mixer from './vdj/scripts/mixer.js'
 import * as loops from './vdj/scripts/loopsHotcues.js'
@@ -165,7 +165,8 @@ export function buildPollJobs(deckCount: number): PollJob[] {
 			kind: 'query',
 			script: transport.qRemainingTime(deck),
 			apply: (body, state) => {
-				state.getDeck(deck).remainingTime = parseVdjText(body)
+				// get_time returns milliseconds, not a formatted string - format it here.
+				state.getDeck(deck).remainingTime = formatVdjTimeLikeValue(body)
 			},
 		})
 		jobs.push({
@@ -246,7 +247,9 @@ export function buildPollJobs(deckCount: number): PollJob[] {
 		kind: 'query',
 		script: master.qRecordTime(),
 		apply: (body, state) => {
-			state.global.recordTime = parseVdjText(body)
+			// Format not independently confirmed for this verb (see docs/VERB_SOURCES.md) -
+			// formatVdjTimeLikeValue only reformats it if it looks like a bare millisecond count.
+			state.global.recordTime = formatVdjTimeLikeValue(body)
 		},
 	})
 	jobs.push({

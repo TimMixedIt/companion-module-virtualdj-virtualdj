@@ -29,6 +29,8 @@ export interface MockDeckState {
 	bpm: string
 	key: string
 	pitch: string
+	/** Milliseconds, as text - this is the real `get_time` wire format (see docs/VERB_SOURCES.md);
+	 * the module formats it into a clock string itself. */
 	remaining: string
 	mute: boolean
 	pfl: boolean

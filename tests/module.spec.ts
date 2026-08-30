@@ -118,7 +118,14 @@ describe('ModuleInstance wired up against a mock Network Control plugin', () => 
 	})
 
 	it('reaches InstanceStatus.Ok and populates variables after a real poll pass', async () => {
-		server.loadTrack(1, { title: 'Body Lang', artist: 'Balanka', bpm: '128', key: 'Am', pitch: '100%' })
+		server.loadTrack(1, {
+			title: 'Body Lang',
+			artist: 'Balanka',
+			bpm: '128',
+			key: 'Am',
+			pitch: '100%',
+			remaining: '188307', // raw milliseconds, as the real Network Control plugin returns it
+		})
 		// Single deck to keep the first pass (which always includes the slow tier -
 		// track metadata, hot cues, sampler slots - see Poller) short and deterministic.
 		const config = defaultTestConfig({ port, pollIntervalMs: 30, decks: 1 })
@@ -133,6 +140,8 @@ describe('ModuleInstance wired up against a mock Network Control plugin', () => 
 		expect(context.variableValues['deck1_title']).toBe('Body Lang')
 		expect(context.variableValues['deck1_artist']).toBe('Balanka')
 		expect(context.variableValues['deck1_bpm']).toBe('128')
+		// Formatted as a clock, not the raw millisecond count the plugin actually returns.
+		expect(context.variableValues['deck1_remaining']).toBe('3:08')
 
 		await instance.destroy()
 	})

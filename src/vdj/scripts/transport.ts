@@ -78,8 +78,10 @@ export const qKey = (deck: number): string => deckScript(deck, "get_key 'musical
 /** UNCONFIRMED - Official appendix only. */
 export const qPitch = (deck: number): string => deckScript(deck, 'get_pitch_value')
 
-/** UNCONFIRMED - Official appendix only. `remain`/`short` args per the manual's `get_time` examples. */
-export const qRemainingTime = (deck: number): string => deckScript(deck, `get_time 'remain' 'short'`)
+/** UNCONFIRMED - Official appendix only. `'remain'` selects remaining (vs. elapsed/total) time; per
+ * the manual, `get_time` always returns **milliseconds** regardless of arguments - it does not
+ * pre-format the value, so callers (see `src/vdj/parse.ts#formatMsAsClock`) format it themselves. */
+export const qRemainingTime = (deck: number): string => deckScript(deck, `get_time 'remain'`)
 
 /** CONFIRMED - Official appendix; local testing (deck_has_error dedicated pad fixture, see VERB_SOURCES.md). */
 export const qDeckHasError = (deck: number): string => deckScript(deck, 'deck_has_error')
