@@ -7,8 +7,8 @@
 	"description": "Control VirtualDJ decks, mixer, loops, hotcues, effects, browser/automix, sampler, master and recording over the Network Control plugin, with feedback and variables driven by polling.",
 	"version": "1.0.0",
 	"license": "MIT",
-	"repository": "git+https://github.com/timmixedit/virtualdj-companion.git",
-	"bugs": "https://github.com/timmixedit/virtualdj-companion/issues",
+	"repository": "git+https://github.com/timmixedit/companion-module-virtualdj-virtualdj.git",
+	"bugs": "https://github.com/timmixedit/companion-module-virtualdj-virtualdj/issues",
 	"maintainers": [
 		{
 			"name": "Tim Kerzmann",

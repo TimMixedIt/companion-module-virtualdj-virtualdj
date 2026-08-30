@@ -17,7 +17,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/timmixedit/virtualdj-companion.git"
+		"url": "git+https://github.com/timmixedit/companion-module-virtualdj-virtualdj.git"
 	},
 	"engines": {
 		"node": "^22.20"
