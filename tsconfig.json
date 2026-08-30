@@ -3,6 +3,12 @@
 	"include": ["src/**/*.ts", "tests/**/*.ts"],
 	"exclude": ["node_modules/**"],
 	"compilerOptions": {
-		"types": ["node" /* , "jest" ] // uncomment this if using jest */]
+		"types": ["node" /* , "jest" ] // uncomment this if using jest */],
+		// tsconfig.build.json (extended above) pins rootDir to "./src" for the production
+		// build, which only ever compiles src/**. This config additionally type-checks
+		// tests/**, so rootDir has to widen to the project root here or tsc rejects every
+		// test file with TS6059. Does not affect `npm run build`, which uses
+		// tsconfig.build.json directly and never sees this override.
+		"rootDir": "."
 	}
 }

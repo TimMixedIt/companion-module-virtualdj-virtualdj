@@ -97,6 +97,22 @@ export function createFakeContext() {
 
 export type FakeContext = ReturnType<typeof createFakeContext>
 
+/** Minimal `CompanionActionContext` for driving an action callback directly in a test. */
+export const fakeActionContext = {
+	type: 'action' as const,
+	setCustomVariableValue: (): void => {
+		/* no-op */
+	},
+}
+
+/** Narrows a `setActionDefinitions`/`setFeedbackDefinitions` entry (typed as `T | false | undefined`
+ * because a module may disable a definition) down to `T` for test assertions, throwing with a useful
+ * message if the definition wasn't registered at all - which is itself a real assertion failure. */
+export function must<T>(value: T | false | undefined, message: string): T {
+	if (value === false || value === undefined) throw new Error(message)
+	return value
+}
+
 /** Instantiates the real ModuleInstance against a fake host context. Call `instance.init(config)` next. */
 export function createModuleInstance(): { instance: ModuleInstance; context: FakeContext } {
 	const context = createFakeContext()

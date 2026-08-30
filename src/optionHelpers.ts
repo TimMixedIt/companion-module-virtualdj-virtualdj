@@ -49,6 +49,42 @@ export function hotCueDropdown<TKey extends string = 'slot'>(
 	}
 }
 
+export type ComparisonOperator = '>' | '>=' | '<' | '<=' | '=='
+
+export function comparisonOperatorDropdown<TKey extends string = 'operator'>(
+	id: TKey = 'operator' as TKey,
+	label = 'Comparison',
+): CompanionInputFieldDropdown<TKey, ComparisonOperator> {
+	return {
+		type: 'dropdown',
+		id,
+		label,
+		default: '>',
+		choices: [
+			{ id: '>', label: 'greater than (>)' },
+			{ id: '>=', label: 'greater than or equal (>=)' },
+			{ id: '<', label: 'less than (<)' },
+			{ id: '<=', label: 'less than or equal (<=)' },
+			{ id: '==', label: 'equal to (==)' },
+		],
+	}
+}
+
+export function compareNumbers(value: number, operator: ComparisonOperator, threshold: number): boolean {
+	switch (operator) {
+		case '>':
+			return value > threshold
+		case '>=':
+			return value >= threshold
+		case '<':
+			return value < threshold
+		case '<=':
+			return value <= threshold
+		case '==':
+			return value === threshold
+	}
+}
+
 export function percentNumber<TKey extends string>(
 	id: TKey,
 	label: string,

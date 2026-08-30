@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { InstanceStatus } from '@companion-module/base'
 import { MockVdjServer } from './mockVdjServer.js'
-import { createModuleInstance, defaultTestConfig } from './testHarness.js'
+import { createModuleInstance, defaultTestConfig, fakeActionContext, must } from './testHarness.js'
 
 async function sleep(ms: number): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms))
@@ -58,18 +58,21 @@ describe('ModuleInstance wired up against a mock Network Control plugin', () => 
 		await instance.init(defaultTestConfig({ port }))
 
 		const before = server.requestLog.length
-		await context.actionDefinitions?.['deck_play']?.callback?.(
+		await must(context.actionDefinitions?.['deck_play'], 'deck_play action not registered').callback(
 			{ id: 'a1', controlId: 'c1', actionId: 'deck_play', options: { deck: 2 }, surfaceId: undefined },
-			{ type: 'action' },
+			fakeActionContext,
 		)
 		const sent = server.requestLog.slice(before)
 		expect(sent).toHaveLength(1)
 		expect(sent[0]).toMatchObject({ endpoint: 'execute', script: 'deck 2 play' })
 		expect(server.deck(2).playing).toBe(true)
 
-		await context.actionDefinitions?.['mixer_eq_kill_high_toggle']?.callback?.(
+		await must(
+			context.actionDefinitions?.['mixer_eq_kill_high_toggle'],
+			'mixer_eq_kill_high_toggle action not registered',
+		).callback(
 			{ id: 'a2', controlId: 'c2', actionId: 'mixer_eq_kill_high_toggle', options: { deck: 1 }, surfaceId: undefined },
-			{ type: 'action' },
+			fakeActionContext,
 		)
 		expect(server.requestLog.at(-1)).toMatchObject({ endpoint: 'execute', script: 'deck 1 eq_kill_high' })
 
@@ -81,7 +84,7 @@ describe('ModuleInstance wired up against a mock Network Control plugin', () => 
 		await instance.init(defaultTestConfig({ port }))
 
 		instance.state.getDeck(1).playing = true
-		const result = context.feedbackDefinitions?.['deck_playing']?.callback?.(
+		const result = must(context.feedbackDefinitions?.['deck_playing'], 'deck_playing feedback not registered').callback(
 			{
 				type: 'boolean',
 				id: 'f1',
@@ -95,7 +98,10 @@ describe('ModuleInstance wired up against a mock Network Control plugin', () => 
 		expect(result).toBe(true)
 
 		instance.state.getDeck(1).playing = false
-		const result2 = context.feedbackDefinitions?.['deck_playing']?.callback?.(
+		const result2 = must(
+			context.feedbackDefinitions?.['deck_playing'],
+			'deck_playing feedback not registered',
+		).callback(
 			{
 				type: 'boolean',
 				id: 'f1',

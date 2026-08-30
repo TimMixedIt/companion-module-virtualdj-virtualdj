@@ -30,7 +30,12 @@ Built on the `@companion-module/base` TypeScript module template/structure
   feedback.
 - **Master & recording**: record/broadcast toggle with feedback, broadcast
   message.
-- **Variables** per deck: title, artist, BPM, remaining time, pitch, key.
+- **Comparison feedbacks**: BPM vs. a threshold, BPM match between two
+  decks (e.g. "ready to mix"), key match between two decks, pitch vs. a
+  threshold - built on the same cached BPM/key/pitch values as the
+  variables below, no extra requests to VirtualDJ.
+- **Variables** per deck: title, artist, BPM, remaining time, pitch, key -
+  see [Variables](#variables) below for the full list and how to use them.
   Plus global crossfader position, automix active, recording time.
 - **~25 presets** for the buttons you reach for most: transport, hot cues
   1-4, an 8-beat loop, EQ kill x3, mute, PFL, FX slot 1, automix and
@@ -65,6 +70,45 @@ Add a new **VirtualDJ** connection, then fill in:
 | Bearer Token | The password from step 2, if you set one - leave blank otherwise |
 | Poll Interval (ms) | How often to refresh fast-changing state; see `docs/POLLING.md` |
 | Number of Decks | 1-4 |
+
+## Variables
+
+Track info shows up as **variables**, not feedbacks - use them in a button's
+text field (Companion usually has a variable picker right in that field),
+referenced as `$(<connection label>:<variable name>)`. The label is whatever
+you named the connection (`VirtualDJ` by default, top of the connection's
+edit panel) - if you rename it, update your button text too.
+
+| Variable | Meaning |
+| --- | --- |
+| `deck<N>_title` | Title of the track loaded on deck N |
+| `deck<N>_artist` | Artist of the track loaded on deck N |
+| `deck<N>_bpm` | Current BPM on deck N |
+| `deck<N>_remaining` | Remaining time on deck N |
+| `deck<N>_pitch` | Current pitch on deck N |
+| `deck<N>_key` | Musical key of the track on deck N |
+| `crossfader_position` | Crossfader position (0-100) |
+| `automix_active` | `yes`/`no` |
+| `record_time` | Current recording time |
+
+`<N>` runs from `1` to your configured "Number of Decks" (e.g. `deck1_title`,
+`deck2_bpm`, ...). Examples for a button's text field:
+
+```
+$(VirtualDJ:deck1_title)
+$(VirtualDJ:deck1_bpm) BPM
+$(VirtualDJ:deck1_artist)
+```
+
+Empty until a track is loaded on that deck - use Companion's own
+**Variables** page (lists every connection's variables with their current
+live value) to check what's actually coming through before wiring up a
+button.
+
+If you want an actual **feedback condition** instead of just showing text
+(e.g. color a button when BPM crosses a threshold, or when two decks match),
+see the comparison feedbacks in "What's covered" above - those read the same
+values but return true/false for button styling.
 
 ## Development
 
