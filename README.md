@@ -133,7 +133,12 @@ showing `$(VirtualDJ:active_title)` or `$(VirtualDJ:active_bpm_rounded) BPM`.
 Options: which deck (or **Active (playing) deck**, see the `active_...`
 variables), the pitch at which the bar is full (set it to your VirtualDJ
 pitch range, default +/-8%), the direction (flip to "faster = up"), and both
-colours. Ready-made buttons are in the presets under **Pitch**.
+colours, and the background: black, or **transparent** so the button's own
+background colour (e.g. from a "Deck is Playing" feedback) shows through.
+Ready-made buttons are in the presets under **Pitch**, including a **Track
+Card** per deck: title, artist and rounded BPM on top of the pitch bar, turning
+green while the deck plays (the bar is blue/orange there so it stays visible on
+green).
 
 ## Development
 

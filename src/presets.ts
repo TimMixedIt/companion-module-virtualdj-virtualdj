@@ -219,6 +219,44 @@ export function UpdatePresets(self: ModuleInstance): void {
 						direction: 'down',
 						fasterColor: combineRgb(0, 170, 0),
 						slowerColor: combineRgb(200, 0, 0),
+						background: 'black',
+					},
+				},
+			],
+		}
+		pitchPresetIds.push(presetId)
+	}
+
+	// Track cards: title, artist and BPM on top of a pitch bar, turning green while the deck plays.
+	// The bar's background is transparent so the playing colour shows through; the bar itself is
+	// blue/orange so it stays visible on both the black and the green background.
+	for (let deck = 1; deck <= self.config.decks; deck++) {
+		const presetId = `track_card_deck${deck}`
+		presets[presetId] = {
+			type: 'simple',
+			name: `Track Card: Deck ${deck}`,
+			style: {
+				text: `$(VirtualDJ:deck${deck}_title)\\n$(VirtualDJ:deck${deck}_artist) - $(VirtualDJ:deck${deck}_bpm_rounded) BPM`,
+				size: 'auto',
+				color: WHITE,
+				bgcolor: BLACK,
+			},
+			steps: [],
+			feedbacks: [
+				{
+					feedbackId: 'deck_playing',
+					options: { deck },
+					style: { bgcolor: combineRgb(0, 130, 0), color: WHITE },
+				},
+				{
+					feedbackId: 'deck_pitch_bar',
+					options: {
+						deck,
+						rangePercent: 8,
+						direction: 'down',
+						fasterColor: combineRgb(0, 140, 255),
+						slowerColor: combineRgb(255, 140, 0),
+						background: 'transparent',
 					},
 				},
 			],
@@ -236,7 +274,9 @@ export function UpdatePresets(self: ModuleInstance): void {
 		{
 			id: 'pitch',
 			name: 'Pitch',
-			description: 'Pitch-fader style bar: grows down when faster than the original tempo, up when slower.',
+			description:
+				'Pitch-fader style bar (grows down when faster than the original tempo, up when slower), and ' +
+				'track cards with title, artist and BPM on top of it that turn green while the deck plays.',
 			definitions: [{ id: 'pitch-group', type: 'simple', name: 'Pitch', presets: pitchPresetIds }],
 		},
 		{

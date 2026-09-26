@@ -5,7 +5,7 @@
 	"name": "virtualdj",
 	"shortname": "VirtualDJ",
 	"description": "Control VirtualDJ decks, mixer, loops, hotcues, effects, browser/automix, sampler, master and recording over the Network Control plugin, with feedback and variables driven by polling.",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"license": "MIT",
 	"repository": "git+https://github.com/timmixedit/companion-module-virtualdj-virtualdj.git",
 	"bugs": "https://github.com/timmixedit/companion-module-virtualdj-virtualdj/issues",

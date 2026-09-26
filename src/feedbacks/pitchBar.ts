@@ -12,6 +12,7 @@ export type PitchBarFeedbacksSchema = {
 			direction: 'up' | 'down'
 			fasterColor: number
 			slowerColor: number
+			background: 'black' | 'transparent'
 		}
 	}
 }
@@ -65,6 +66,16 @@ export function getPitchBarFeedbacks(self: ModuleInstance): CompanionFeedbackDef
 				},
 				{ type: 'colorpicker', id: 'fasterColor', label: 'Faster colour', default: combineRgb(0, 170, 0) },
 				{ type: 'colorpicker', id: 'slowerColor', label: 'Slower colour', default: combineRgb(200, 0, 0) },
+				{
+					type: 'dropdown',
+					id: 'background',
+					label: 'Background',
+					default: 'black',
+					choices: [
+						{ id: 'black', label: 'Black' },
+						{ id: 'transparent', label: "Transparent (show the button's background colour)" },
+					],
+				},
 			],
 			callback: (feedback) => {
 				const { options } = feedback
@@ -78,6 +89,7 @@ export function getPitchBarFeedbacks(self: ModuleInstance): CompanionFeedbackDef
 						fasterColor: Number(options.fasterColor),
 						slowerColor: Number(options.slowerColor),
 						fasterIsUp: options.direction === 'up',
+						transparentBackground: options.background === 'transparent',
 					}),
 					pngalignment: 'center:center',
 				}
