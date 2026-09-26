@@ -47,7 +47,7 @@ confirmed) to also work as a query has a matching feedback. See
 the official manual **and** independent evidence) vs. `UNCONFIRMED`
 (official manual only - not independently verified, included anyway but
 flagged both in that file and right above the verb in the source code).
-Verbs that could not be confirmed to exist *at all* were left out entirely;
+Verbs that could not be confirmed to exist _at all_ were left out entirely;
 that list is also in `docs/VERB_SOURCES.md`.
 
 ## VirtualDJ setup
@@ -63,13 +63,13 @@ that list is also in `docs/VERB_SOURCES.md`.
 
 Add a new **VirtualDJ** connection, then fill in:
 
-| Field | Meaning |
-| --- | --- |
-| VirtualDJ Host / IP | Where VirtualDJ is running (`127.0.0.1` if it's the same machine as Companion) |
-| Network Control Port | The port from VirtualDJ setup step 2 (default `80`) |
-| Bearer Token | The password from step 2, if you set one - leave blank otherwise |
-| Poll Interval (ms) | How often to refresh fast-changing state; see `docs/POLLING.md` |
-| Number of Decks | 1-4 |
+| Field                | Meaning                                                                        |
+| -------------------- | ------------------------------------------------------------------------------ |
+| VirtualDJ Host / IP  | Where VirtualDJ is running (`127.0.0.1` if it's the same machine as Companion) |
+| Network Control Port | The port from VirtualDJ setup step 2 (default `80`)                            |
+| Bearer Token         | The password from step 2, if you set one - leave blank otherwise               |
+| Poll Interval (ms)   | How often to refresh fast-changing state; see `docs/POLLING.md`                |
+| Number of Decks      | 1-4                                                                            |
 
 ## Variables
 
@@ -79,17 +79,19 @@ referenced as `$(<connection label>:<variable name>)`. The label is whatever
 you named the connection (`VirtualDJ` by default, top of the connection's
 edit panel) - if you rename it, update your button text too.
 
-| Variable | Meaning |
-| --- | --- |
-| `deck<N>_title` | Title of the track loaded on deck N |
-| `deck<N>_artist` | Artist of the track loaded on deck N |
-| `deck<N>_bpm` | Current BPM on deck N |
-| `deck<N>_remaining` | Remaining time on deck N |
-| `deck<N>_pitch` | Current pitch on deck N |
-| `deck<N>_key` | Musical key of the track on deck N |
-| `crossfader_position` | Crossfader position (0-100) |
-| `automix_active` | `yes`/`no` |
-| `record_time` | Current recording time |
+| Variable                                                                                        | Meaning                                                              |
+| ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `deck<N>_title`                                                                                 | Title of the track loaded on deck N                                  |
+| `deck<N>_artist`                                                                                | Artist of the track loaded on deck N                                 |
+| `deck<N>_bpm`                                                                                   | Current BPM on deck N                                                |
+| `deck<N>_remaining`                                                                             | Remaining time on deck N                                             |
+| `deck<N>_pitch`                                                                                 | Current pitch on deck N                                              |
+| `deck<N>_key`                                                                                   | Musical key of the track on deck N                                   |
+| `active_deck`                                                                                   | Number of the deck currently playing ("on air")                      |
+| `active_title`, `active_artist`, `active_bpm`, `active_remaining`, `active_pitch`, `active_key` | Same as the `deck<N>_...` variables, but always for the playing deck |
+| `crossfader_position`                                                                           | Crossfader position (0-100)                                          |
+| `automix_active`                                                                                | `yes`/`no`                                                           |
+| `record_time`                                                                                   | Current recording time                                               |
 
 `<N>` runs from `1` to your configured "Number of Decks" (e.g. `deck1_title`,
 `deck2_bpm`, ...). Examples for a button's text field:
@@ -99,6 +101,12 @@ $(VirtualDJ:deck1_title)
 $(VirtualDJ:deck1_bpm) BPM
 $(VirtualDJ:deck1_artist)
 ```
+
+The `active_...` variables follow whichever deck is playing: with one deck
+playing it's that deck; with several playing (during a transition) it's the
+side the crossfader leans towards (odd decks left, even decks right); when
+nothing plays it keeps the last deck. So `$(VirtualDJ:active_bpm) BPM` never
+shows the BPM of the deck that's just cued up.
 
 Empty until a track is loaded on that deck - use Companion's own
 **Variables** page (lists every connection's variables with their current
@@ -125,7 +133,7 @@ The four completion criteria from the brief, and exactly how each was
 checked:
 
 1. **"Builds and lints without errors."** `npm run build` (`tsc -p
-   tsconfig.build.json`) and `npm run lint` (`eslint .`, prettier +
+tsconfig.build.json`) and `npm run lint` (`eslint .`, prettier +
    typescript-eslint via `@companion-module/tools`) both exit 0 with no
    output. Re-run these two commands to reproduce.
 
@@ -134,7 +142,7 @@ checked:
    here (no display, no Companion host), so it's proven at the API boundary
    instead: `tests/module.spec.ts` instantiates the actual
    `ModuleInstance` class (the same file the manifest points Companion at)
-   against a fake but *structurally real* host context (satisfies
+   against a fake but _structurally real_ host context (satisfies
    `@companion-module/base`'s own `isInstanceContext` runtime check - not a
    loose mock) and asserts that `setActionDefinitions`,
    `setFeedbackDefinitions`, `setVariableDefinitions` and
@@ -154,7 +162,7 @@ checked:
    through it and assert the exact VDJScript string sent
    (`deck 2 play`, `deck 1 eq_kill_high`, ...), and run real feedbacks
    against manipulated cached state and assert the boolean they return.
-   `tests/poller.spec.ts` additionally proves the *polling* engine's
+   `tests/poller.spec.ts` additionally proves the _polling_ engine's
    behaviour (request counts, tiering, self-pacing) against the same mock
    - see `docs/POLLING.md` for the measured numbers.
 
@@ -198,7 +206,7 @@ application - the following can only be confirmed on real hardware:
       VirtualDJ machine.
 - [ ] Whether your VirtualDJ build's Network Control plugin returns HTTP 401
       or some other status for a wrong bearer token (documented only as "an
-      HTTP error code" - this module treats 401 *and* 403 as an auth
+      HTTP error code" - this module treats 401 _and_ 403 as an auth
       failure, but hasn't been checked against a real wrong-password
       response).
 - [ ] Multi-deck behavior beyond 2 decks (4-deck VirtualDJ setups), and any
