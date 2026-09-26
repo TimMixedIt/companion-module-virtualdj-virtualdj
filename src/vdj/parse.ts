@@ -43,6 +43,12 @@ export function parseVdjNumber(body: string | undefined): number | undefined {
 	return Number.isFinite(value) ? value : undefined
 }
 
+/** Rounds a raw BPM reading (e.g. `139.98`) to a whole number for display; empty when there is no BPM. */
+export function formatRoundedBpm(body: string | undefined): string {
+	const value = parseVdjNumber(body)
+	return value === undefined ? '' : String(Math.round(value))
+}
+
 /** Formats a millisecond duration as `m:ss`, or `h:mm:ss` once it reaches an hour. `get_time` (see
  * docs/VERB_SOURCES.md) returns milliseconds regardless of its arguments - VirtualDJ does not format
  * this for us, so the module does it here rather than displaying a raw millisecond count. */
