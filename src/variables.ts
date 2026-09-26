@@ -25,6 +25,11 @@ export function UpdateVariableDefinitions(self: ModuleInstance): void {
 		}
 	}
 
+	definitions['active_deck'] = { name: 'Active (playing) Deck Number' }
+	for (const field of PER_DECK_FIELDS) {
+		definitions[`active_${field.suffix}`] = { name: `Active (playing) Deck: ${field.label}` }
+	}
+
 	definitions['crossfader_position'] = { name: 'Crossfader Position (0-100)' }
 	definitions['automix_active'] = { name: 'Automix Active (yes/no)' }
 	definitions['record_time'] = { name: 'Recording Time' }
@@ -45,6 +50,12 @@ export function refreshVariableValues(self: ModuleInstance): void {
 		values[deckVariableId(deck, 'remaining')] = deckState.remainingTime
 		values[deckVariableId(deck, 'pitch')] = deckState.pitch
 		values[deckVariableId(deck, 'key')] = deckState.key
+	}
+
+	const activeDeck = self.state.updateActiveDeck(self.config.decks)
+	values['active_deck'] = activeDeck
+	for (const field of PER_DECK_FIELDS) {
+		values[`active_${field.suffix}`] = values[deckVariableId(activeDeck, field.suffix)]
 	}
 
 	values['crossfader_position'] = self.state.global.crossfader ?? ''

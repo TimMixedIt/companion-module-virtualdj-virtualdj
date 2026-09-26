@@ -33,6 +33,8 @@ export interface DeckState {
 
 export interface GlobalState {
 	crossfader: number | undefined
+	/** Deck currently considered "on air" - see {@link pickActiveDeck}. Sticky: keeps the last value while nothing plays. */
+	activeDeck: number
 	automixActive: boolean
 	recording: boolean
 	broadcasting: boolean
@@ -68,6 +70,7 @@ export function createDefaultDeckState(): DeckState {
 export function createDefaultGlobalState(): GlobalState {
 	return {
 		crossfader: undefined,
+		activeDeck: 1,
 		automixActive: false,
 		recording: false,
 		broadcasting: false,
@@ -75,6 +78,29 @@ export function createDefaultGlobalState(): GlobalState {
 		samplerUsed: false,
 		samplerSlotLoaded: new Array(SAMPLER_SLOTS).fill(false) as boolean[],
 	}
+}
+
+/**
+ * Decides which deck is "on air", so a single button can show the BPM/title of
+ * whatever is actually playing instead of a fixed deck:
+ * - exactly one deck playing -> that deck
+ * - several playing (mid-transition) -> the side the crossfader leans towards
+ *   (odd decks = left, even decks = right, VirtualDJ's default assignment);
+ *   with the crossfader centred, keep the previous deck if it is still playing
+ * - nothing playing -> keep the previous deck so the display doesn't blank out
+ */
+export function pickActiveDeck(playing: boolean[], crossfader: number | undefined, previous: number): number {
+	const playingDecks = playing.flatMap((isPlaying, i) => (isPlaying ? [i + 1] : []))
+	if (playingDecks.length === 0) return previous <= playing.length ? previous : 1
+	if (playingDecks.length === 1) return playingDecks[0]
+
+	if (crossfader !== undefined && crossfader !== 50) {
+		const wantEven = crossfader > 50
+		const sameSide = playingDecks.filter((deck) => (deck % 2 === 0) === wantEven)
+		if (sameSide.includes(previous)) return previous
+		if (sameSide.length > 0) return sameSide[0]
+	}
+	return playingDecks.includes(previous) ? previous : playingDecks[0]
 }
 
 export class VdjState {
@@ -88,6 +114,14 @@ export class VdjState {
 			this.decks.set(deck, state)
 		}
 		return state
+	}
+
+	/** Recomputes {@link GlobalState.activeDeck} from the cached playing/crossfader state. */
+	updateActiveDeck(deckCount: number): number {
+		const playing: boolean[] = []
+		for (let deck = 1; deck <= deckCount; deck++) playing.push(this.getDeck(deck).playing)
+		this.global.activeDeck = pickActiveDeck(playing, this.global.crossfader, this.global.activeDeck)
+		return this.global.activeDeck
 	}
 
 	ensureDecks(count: number): void {
