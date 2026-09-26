@@ -193,12 +193,51 @@ export function UpdatePresets(self: ModuleInstance): void {
 	}
 	globalPresetIds.push('record_toggle')
 
+	const pitchPresetIds: string[] = []
+	const pitchTargets = [
+		{ id: 'active', deck: 0, label: 'Playing Deck', text: '$(VirtualDJ:active_pitch)' },
+		...Array.from({ length: self.config.decks }, (_, i) => ({
+			id: `deck${i + 1}`,
+			deck: i + 1,
+			label: `Deck ${i + 1}`,
+			text: `$(VirtualDJ:deck${i + 1}_pitch)`,
+		})),
+	]
+	for (const target of pitchTargets) {
+		const presetId = `pitch_bar_${target.id}`
+		presets[presetId] = {
+			type: 'simple',
+			name: `Pitch Bar: ${target.label}`,
+			style: { text: target.text, size: '18', color: WHITE, bgcolor: BLACK },
+			steps: [],
+			feedbacks: [
+				{
+					feedbackId: 'deck_pitch_bar',
+					options: {
+						deck: target.deck,
+						rangePercent: 8,
+						direction: 'down',
+						fasterColor: combineRgb(0, 170, 0),
+						slowerColor: combineRgb(200, 0, 0),
+					},
+				},
+			],
+		}
+		pitchPresetIds.push(presetId)
+	}
+
 	const structure: CompanionPresetSection<ModuleSchema>[] = [
 		{
 			id: 'decks',
 			name: 'Decks',
 			description: 'Transport, hot cues, loops, EQ kill, mute/PFL and FX per deck.',
 			definitions: [{ id: 'decks-group', type: 'simple', name: 'Decks', presets: deckPresetIds }],
+		},
+		{
+			id: 'pitch',
+			name: 'Pitch',
+			description: 'Pitch-fader style bar: grows down when faster than the original tempo, up when slower.',
+			definitions: [{ id: 'pitch-group', type: 'simple', name: 'Pitch', presets: pitchPresetIds }],
 		},
 		{
 			id: 'global',

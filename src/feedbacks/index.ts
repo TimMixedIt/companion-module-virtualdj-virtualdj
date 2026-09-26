@@ -7,6 +7,7 @@ import { getBrowserAutomixFeedbacks, type BrowserAutomixFeedbacksSchema } from '
 import { getSamplerFeedbacks, type SamplerFeedbacksSchema } from './sampler.js'
 import { getMasterRecordingFeedbacks, type MasterRecordingFeedbacksSchema } from './masterRecording.js'
 import { getComparisonFeedbacks, type ComparisonFeedbacksSchema } from './comparisons.js'
+import { getPitchBarFeedbacks, type PitchBarFeedbacksSchema } from './pitchBar.js'
 
 export type FeedbacksSchema = TransportFeedbacksSchema &
 	MixerFeedbacksSchema &
@@ -15,7 +16,8 @@ export type FeedbacksSchema = TransportFeedbacksSchema &
 	BrowserAutomixFeedbacksSchema &
 	SamplerFeedbacksSchema &
 	MasterRecordingFeedbacksSchema &
-	ComparisonFeedbacksSchema
+	ComparisonFeedbacksSchema &
+	PitchBarFeedbacksSchema
 
 export function UpdateFeedbacks(self: ModuleInstance): void {
 	self.setFeedbackDefinitions({
@@ -27,5 +29,6 @@ export function UpdateFeedbacks(self: ModuleInstance): void {
 		...getSamplerFeedbacks(self),
 		...getMasterRecordingFeedbacks(self),
 		...getComparisonFeedbacks(self),
+		...getPitchBarFeedbacks(self),
 	})
 }

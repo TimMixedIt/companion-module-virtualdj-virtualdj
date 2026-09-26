@@ -34,6 +34,8 @@ Built on the `@companion-module/base` TypeScript module template/structure
   decks (e.g. "ready to mix"), key match between two decks, pitch vs. a
   threshold - built on the same cached BPM/key/pitch values as the
   variables below, no extra requests to VirtualDJ.
+- **Pitch bar**: "Deck Pitch Bar (background)" feedback draws a
+  pitch-fader style bar behind the button text - see [Pitch bar](#pitch-bar).
 - **Variables** per deck: title, artist, BPM, remaining time, pitch, key -
   see [Variables](#variables) below for the full list and how to use them.
   Plus global crossfader position, automix active, recording time.
@@ -118,6 +120,20 @@ If you want an actual **feedback condition** instead of just showing text
 (e.g. color a button when BPM crosses a threshold, or when two decks match),
 see the comparison feedbacks in "What's covered" above - those read the same
 values but return true/false for button styling.
+
+## Pitch bar
+
+The **Deck Pitch Bar (background)** feedback turns the button background into
+a pitch display: black, with a thin centre line at the original tempo and a
+bar growing from the centre - by default **down when the track plays faster,
+up when slower**, like VirtualDJ's pitch fader (green faster, red slower).
+Button text stays on top, so you can add it to any existing button, e.g. one
+showing `$(VirtualDJ:active_title)` or `$(VirtualDJ:active_bpm_rounded) BPM`.
+
+Options: which deck (or **Active (playing) deck**, see the `active_...`
+variables), the pitch at which the bar is full (set it to your VirtualDJ
+pitch range, default +/-8%), the direction (flip to "faster = up"), and both
+colours. Ready-made buttons are in the presets under **Pitch**.
 
 ## Development
 
