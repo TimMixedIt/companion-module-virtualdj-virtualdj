@@ -79,19 +79,20 @@ referenced as `$(<connection label>:<variable name>)`. The label is whatever
 you named the connection (`VirtualDJ` by default, top of the connection's
 edit panel) - if you rename it, update your button text too.
 
-| Variable                                                                                        | Meaning                                                              |
-| ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `deck<N>_title`                                                                                 | Title of the track loaded on deck N                                  |
-| `deck<N>_artist`                                                                                | Artist of the track loaded on deck N                                 |
-| `deck<N>_bpm`                                                                                   | Current BPM on deck N                                                |
-| `deck<N>_remaining`                                                                             | Remaining time on deck N                                             |
-| `deck<N>_pitch`                                                                                 | Current pitch on deck N                                              |
-| `deck<N>_key`                                                                                   | Musical key of the track on deck N                                   |
-| `active_deck`                                                                                   | Number of the deck currently playing ("on air")                      |
-| `active_title`, `active_artist`, `active_bpm`, `active_remaining`, `active_pitch`, `active_key` | Same as the `deck<N>_...` variables, but always for the playing deck |
-| `crossfader_position`                                                                           | Crossfader position (0-100)                                          |
-| `automix_active`                                                                                | `yes`/`no`                                                           |
-| `record_time`                                                                                   | Current recording time                                               |
+| Variable                                                                                                              | Meaning                                                                           |
+| --------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `deck<N>_title`                                                                                                       | Title of the track loaded on deck N                                               |
+| `deck<N>_artist`                                                                                                      | Artist of the track loaded on deck N                                              |
+| `deck<N>_bpm`                                                                                                         | Current BPM on deck N                                                             |
+| `deck<N>_bpm_rounded`                                                                                                 | Current BPM on deck N, rounded to a whole number (e.g. `140` instead of `139.98`) |
+| `deck<N>_remaining`                                                                                                   | Remaining time on deck N                                                          |
+| `deck<N>_pitch`                                                                                                       | Current pitch on deck N                                                           |
+| `deck<N>_key`                                                                                                         | Musical key of the track on deck N                                                |
+| `active_deck`                                                                                                         | Number of the deck currently playing ("on air")                                   |
+| `active_title`, `active_artist`, `active_bpm`, `active_bpm_rounded`, `active_remaining`, `active_pitch`, `active_key` | Same as the `deck<N>_...` variables, but always for the playing deck              |
+| `crossfader_position`                                                                                                 | Crossfader position (0-100)                                                       |
+| `automix_active`                                                                                                      | `yes`/`no`                                                                        |
+| `record_time`                                                                                                         | Current recording time                                                            |
 
 `<N>` runs from `1` to your configured "Number of Decks" (e.g. `deck1_title`,
 `deck2_bpm`, ...). Examples for a button's text field:

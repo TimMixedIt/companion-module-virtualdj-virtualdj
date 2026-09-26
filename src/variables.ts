@@ -1,5 +1,6 @@
 import type { CompanionVariableDefinition, CompanionVariableValues } from '@companion-module/base'
 import type ModuleInstance from './main.js'
+import { formatRoundedBpm } from './vdj/parse.js'
 
 export type VariablesSchema = CompanionVariableValues
 
@@ -7,6 +8,7 @@ const PER_DECK_FIELDS: { suffix: string; label: string }[] = [
 	{ suffix: 'title', label: 'Title' },
 	{ suffix: 'artist', label: 'Artist' },
 	{ suffix: 'bpm', label: 'BPM' },
+	{ suffix: 'bpm_rounded', label: 'BPM (rounded)' },
 	{ suffix: 'remaining', label: 'Remaining Time' },
 	{ suffix: 'pitch', label: 'Pitch' },
 	{ suffix: 'key', label: 'Key' },
@@ -47,6 +49,7 @@ export function refreshVariableValues(self: ModuleInstance): void {
 		values[deckVariableId(deck, 'title')] = deckState.title
 		values[deckVariableId(deck, 'artist')] = deckState.artist
 		values[deckVariableId(deck, 'bpm')] = deckState.bpm
+		values[deckVariableId(deck, 'bpm_rounded')] = formatRoundedBpm(deckState.bpm)
 		values[deckVariableId(deck, 'remaining')] = deckState.remainingTime
 		values[deckVariableId(deck, 'pitch')] = deckState.pitch
 		values[deckVariableId(deck, 'key')] = deckState.key

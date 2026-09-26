@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { pickActiveDeck } from '../src/state.js'
+import { formatRoundedBpm } from '../src/vdj/parse.js'
 
 describe('pickActiveDeck', () => {
 	it('picks the only playing deck', () => {
@@ -25,5 +26,14 @@ describe('pickActiveDeck', () => {
 
 	it('falls back to deck 1 if the previous deck no longer exists', () => {
 		expect(pickActiveDeck([false, false], 50, 4)).toBe(1)
+	})
+})
+
+describe('formatRoundedBpm', () => {
+	it('rounds to a whole number and stays empty without a BPM', () => {
+		expect(formatRoundedBpm('139.98')).toBe('140')
+		expect(formatRoundedBpm('128.46')).toBe('128')
+		expect(formatRoundedBpm('')).toBe('')
+		expect(formatRoundedBpm(undefined)).toBe('')
 	})
 })
